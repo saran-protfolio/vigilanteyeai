@@ -1,0 +1,48 @@
+{
+  "entities": {
+    "user": {
+      "title": "User Profile Document",
+      "description": "Information regarding the authorized digital defense observer.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string" },
+        "cyberSafetyScoreList": { "type": "array" },
+        "registeredAt": { "type": "string" },
+        "scansCount": { "type": "integer" }
+      },
+      "required": ["uid", "email"]
+    },
+    "scan": {
+      "title": "Threat Scan Record",
+      "description": "Recorded indicators of suspicious texts, URL patterns, or images analyzed by the system.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "type": { "type": "string" },
+        "contentAnalyzed": { "type": "string" },
+        "riskScore": { "type": "integer" },
+        "status": { "type": "string" },
+        "threatCategory": { "type": "string" },
+        "confidence": { "type": "integer" },
+        "explanation": { "type": "string" },
+        "detectedFlags": { "type": "array" },
+        "safetyRecommendations": { "type": "array" }
+      },
+      "required": ["id", "timestamp", "type", "contentAnalyzed", "riskScore", "status", "threatCategory"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "user",
+      "description": "User profiles indexed by UID coordinates."
+    },
+    "/scans/{scanId}": {
+      "schema": "scan",
+      "description": "Recorded threat scan outputs."
+    }
+  }
+}

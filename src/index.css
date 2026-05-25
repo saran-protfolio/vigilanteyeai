@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  /* Default: Dark Theme (Midnight Slate) */
+  --color-canvas: #0B0F19;
+  --color-surface: #161F30;
+  --color-primary-text: #F8FAFC;
+  --color-secondary-text: #94A3B8;
+  --color-brand-accent: #818CF8;
+  --color-success-state: #34D399;
+  --color-danger-state: #F87171;
+  --header-bg: rgba(11, 15, 25, 0.85);
+  --border-color: rgba(255, 255, 255, 0.08);
+}
+
+.light {
+  /* Light Theme (Pure White & Off-White) */
+  --color-canvas: #FFFFFF;
+  --color-surface: #F4F6F8;
+  --color-primary-text: #0F172A;
+  --color-secondary-text: #64748B;
+  --color-brand-accent: #6366F1;
+  --color-success-state: #10B981;
+  --color-danger-state: #EF4444;
+  --header-bg: rgba(255, 255, 255, 0.85);
+  --border-color: rgba(15, 23, 42, 0.08);
+}
+
+@theme {
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-jakarta: "Plus Jakarta Sans", "Poppins", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Register the custom variables as utility-friendly colors */
+  --color-canvas: var(--color-canvas);
+  --color-surface: var(--color-surface);
+  --color-brand-accent: var(--color-brand-accent);
+  --color-primary-text: var(--color-primary-text);
+  --color-secondary-text: var(--color-secondary-text);
+  --color-success-state: var(--color-success-state);
+  --color-danger-state: var(--color-danger-state);
+}
+
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-primary-text);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Glassmorphism Cards */
+.glass-card {
+  background: var(--color-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s, border-color 0.3s;
+}
+
+.glass-card-hover:hover {
+  transform: translateY(-4px);
+  border-color: rgba(99, 102, 241, 0.25);
+  box-shadow: 0 12px 30px rgba(99, 102, 241, 0.08);
+}
+
+.glow-border-brand {
+  box-shadow: 0 0 25px rgba(99, 102, 241, 0.1);
+  border: 1px solid var(--color-brand-accent);
+}
+
+/* Background Cyber Grid lines for modern cyber/security environment */
+.bg-cyber-gradient {
+  background-color: var(--color-canvas);
+  background-image: 
+    radial-gradient(at top right, rgba(99, 102, 241, 0.06) 0px, transparent 50%),
+    radial-gradient(at bottom left, rgba(129, 140, 248, 0.04) 0px, transparent 50%);
+  background-attachment: fixed;
+}
+
+/* Active scanning scanner beam anim */
+.scanner-beam {
+  animation: scan 2.5s ease-in-out infinite;
+  background: linear-gradient(to bottom, transparent, var(--color-brand-accent), transparent);
+}
+
+@keyframes scan {
+  0% {
+    top: 0%;
+  }
+  50% {
+    top: 100%;
+  }
+  100% {
+    top: 0%;
+  }
+}
+
+/* Beautiful custom theme-dependent scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-canvas);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-secondary-text);
+  border-radius: 4px;
+  opacity: 0.3;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-brand-accent);
+}

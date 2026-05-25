@@ -1,0 +1,46 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default catch-all denies access securely
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Auth helpers
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Strict ID check validation
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // 1. User Profiles Collection
+    match /users/{userId} {
+      allow read: if isSignedIn() && (isOwner(userId) || exists(/databases/$(database)/documents/admins/$(request.auth.uid)));
+      allow create, update: if isSignedIn() && isOwner(userId)
+                            && request.resource.data.keys().hasAll(['uid', 'email'])
+                            && request.resource.data.uid is string
+                            && request.resource.data.email is string;
+      allow delete: if false; // Profiles are immutable of safety deletion
+    }
+
+    // 2. Scans Records Collection
+    match /scans/{scanId} {
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow get: if isSignedIn() && (resource.data.userId == request.auth.uid || exists(/databases/$(database)/documents/admins/$(request.auth.uid)));
+      allow create: if isSignedIn() 
+                    && request.resource.data.userId == request.auth.uid
+                    && request.resource.data.riskScore is int
+                    && request.resource.data.riskScore >= 0 
+                    && request.resource.data.riskScore <= 100;
+      allow update, delete: if false; // Threat ledgers cannot be modified by user client SDKs
+    }
+  }
+}
